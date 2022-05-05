@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\veritabani;
+use App\Http\Controllers\Satisislemleri;
+use App\Http\Controllers\formkontrol;
+use App\Http\Controllers\Adminislemleri;
+
+Route::get('/',function(){return view("index",["say"=>"","etkinlikturu"=>""]);})->name("anasayfa");
+Route::get('/festivaller', function (){return view("festival");})->name("festival")->middleware("arakontrol");
+Route::get('/kayitol', function (){return view("kayitol",["kontrolonay"=>""]);})->name("kayitol");
+Route::get('/hakkimizda', function (){return view("hakkimizda");})->name("hakkimizda");
+Route::get('/bizeulasin', function (){return view("iletisim");})->name("iletisim");
+Route::get('/girisyap', function (){return view("girisyap",["kontrolonay"=>""]);})->name("girisyap");
+Route::get('/EtkinlikTuru/{tur}', [veritabani::class, 'getir'])->name("EtkinlikTuru")->middleware("arakontrol");
+Route::post('/login-check=true', [veritabani::class, 'logincheck'])->name("giriskontrol");
+Route::get('/login-out', [veritabani::class,'cikisyap'])->name("cikis");
+Route::post('/my_profile_information_edit',[veritabani::class,'guncelle'])->name("guncelle")->middleware("arakontrol");
+Route::get('/my_profile_information',[veritabani::class, 'bilgilerim'])->name("bilgilerim")->middleware("arakontrol");
+//Route::post('/my_profile_information-update-check',[veritabani::class, 'updatecheck'])->name("guncellekontrol");
+Route::post('/form-check', [veritabani::class, 'kayitkontrol'])->name("verikontrol");
+Route::get('/remember', [veritabani::class, 'sifremiunuttum'])->name("remember");
+Route::get('/sifremiunuttum', function (){return view("sifremiunuttum");})->name("sifremiunuttum");
+Route::get('/code_check', function (){return view("kodgir");})->name("kodgir");
+Route::post('/code_check=true&false', [veritabani::class, 'aktif'])->name("aktif");
+Route::post('/new_password_active', [veritabani::class, 'yenilekontrol'])->name("yenilekontrol");
+Route::get('/new_password', function (){return view("sifreyenile");})->name("yenile");
+Route::get('/Sepetim',[Satisislemleri::class, 'idcek'])->name("satinal")->middleware("arakontrol");
+Route::post('/yaz2', [Satisislemleri::class, 'check'])->name("check");
+Route::post('/satinaltamamla', [Satisislemleri::class, 'satinaltamamla'])->name("satinaltamamla");
+Route::post('/sepetbiletekleme', [Satisislemleri::class, 'sepetbiletekle'])->name("sepetbiletekle");
+Route::post('/biletkontrol', [Satisislemleri::class, 'biletkontrolet'])->name("biletkontrolet");
+Route::post('/SepeteEkle', [Satisislemleri::class, 'sepetekle'])->name("sepet");
+Route::get('/SepettenCikar/{id}', [Satisislemleri::class, 'sepettencikar'])->name("sepettencikar");
+Route::get('/kuponyazdir/{id}', [Satisislemleri::class, 'kuponyazdir'])->name("kuponyazdir")->middleware("arakontrol");
+Route::get('/MyTickets',[Satisislemleri::class, 'biletlerim'])->name("biletlerim")->middleware("arakontrol");
+Route::post('/OnKontrol',[veritabani::class, 'ReUptade'])->name("onkontrol");
+Route::post('/sifrekontrol',[veritabani::class, 'sifrekontrol'])->name("sifrekontrol");
+Route::get('/AdminControlPanel',[Adminislemleri::class, 'Adminindex'])->name("admin");
+Route::get('/AdminAddItem',function(){return view("admin/form");})->name("Urunsayfasi");
+Route::post('/AdminAddItem=True',[Adminislemleri::class, 'AddItem'])->name("urunekle");
+Route::get('/AdminItemList/{filtrem}',[Adminislemleri::class, 'UrunListele'])->name("listele");
+Route::post('/AdminRemoveItem',[Adminislemleri::class, 'UrunSil'])->name("urunsil");
+Route::post('/AdminEditItem/{id}',[Adminislemleri::class, 'UrunDuzenle'])->name("duzenle");
+Route::post('/AdminDeleteUser',[Adminislemleri::class, 'Uyesil'])->name("uyesil");
+Route::post('/Bildirim',[Adminislemleri::class, 'bildirimler'])->name("bildirimlerigetir");
+Route::post('/AdminEditUser/{email}',[Adminislemleri::class, 'UyeDuzenle'])->name("uyeleriduzenle");
+Route::post('/BizeUlasinSend',[Adminislemleri::class, 'bizeulasin'])->name("bizeulasin");
