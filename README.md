@@ -1,4 +1,4 @@
-# Konser_Bilet_Satis_Sitesi
+# Konser Bilet Satış Sitesi Laravel Framework
 
 
 
